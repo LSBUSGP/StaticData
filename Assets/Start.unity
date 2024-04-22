@@ -469,9 +469,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ee43f52d1a5484c846f05acd8fa079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: e50702b912ca6c14792257d07bf967e7, type: 2}
   intro: {fileID: 0}
   win: {fileID: 0}
   lose: {fileID: 0}
+  timer: {fileID: 0}
   level: 0
   totalSheep: 20
   sheep: {fileID: -4647045405567727069, guid: 24a3c819c91c01842a71fc1b98a6fe73, type: 3}

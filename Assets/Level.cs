@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    public GameData gameData;
     public Transform intro;
     public Transform win;
     public Transform lose;
@@ -20,6 +21,10 @@ public class Level : MonoBehaviour
         if (intro != null)
         {
             StartCoroutine(ShowIntro());
+        }
+        else
+        {
+            gameData.ResetTimer();
         }
         List<Vector2> positions = new List<Vector2>();
         for (int i = 0; i < totalSheep; i++)
