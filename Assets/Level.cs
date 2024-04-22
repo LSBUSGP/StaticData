@@ -19,7 +19,7 @@ public class Level : MonoBehaviour
     {
         if (intro != null)
         {
-            StartCoroutine(ShowInstructions());
+            StartCoroutine(ShowIntro());
         }
         else
         {
@@ -51,7 +51,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    IEnumerator ShowInstructions()
+    IEnumerator ShowIntro()
     {
         intro.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
