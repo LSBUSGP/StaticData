@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
-    static GameData instance;
+    public static GameData instance;
     float time = 0.0f;
 
     void Start()
