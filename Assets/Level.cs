@@ -21,6 +21,10 @@ public class Level : MonoBehaviour
         {
             StartCoroutine(ShowInstructions());
         }
+        else
+        {
+            PlayerPrefs.DeleteKey("Time");
+        }
         List<Vector2> positions = new List<Vector2>();
         for (int i = 0; i < totalSheep; i++)
         {
@@ -52,7 +56,9 @@ public class Level : MonoBehaviour
         intro.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         intro.gameObject.SetActive(false);
+        timer.LoadTime();
         timer.gameObject.SetActive(true);
+
     }
 
     public void CountSheep()
@@ -67,6 +73,7 @@ public class Level : MonoBehaviour
     IEnumerator YouWin()
     {
         timer.enabled = false;
+        timer.SaveTime();
         win.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         Load(next);

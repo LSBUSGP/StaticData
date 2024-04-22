@@ -15,4 +15,14 @@ public class Timer : MonoBehaviour
         TimeSpan span = TimeSpan.FromSeconds(time);
         text.text = $"TIME: {span.Minutes:D2}:{span.Seconds:D2}.{span.Milliseconds/10:D2}";
     }
+
+    internal void SaveTime()
+    {
+        PlayerPrefs.SetFloat("Time", time);
+    }
+
+    internal void LoadTime()
+    {
+        time = PlayerPrefs.GetFloat("Time", 0.0f);
+    }
 }
