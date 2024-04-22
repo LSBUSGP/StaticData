@@ -22,3 +22,8 @@ We need to set the time after winning the level. This can be added to the `YouWi
 
 Another simple way is to make use of the `static` keyword for the `time` data in our `Timer` class. Static data belongs to the class but not to any particular instance of the data. This means that we can access it from anywhere without needing an instance of the class to reference. We still need to reset the value at the start of the game as with the `PlayerPrefs` method.
 
+## DontDestroyOnLoad
+
+With this method we use a `GameObject` in the scene to store our time data. Unlike other `GameObject`s it won't be destroyed when the scene changes. This means we can continue to access its data between scenes. In this case we need to make sure that the `GameObject` is in the `Start` scene but not in the other scenes. This also means that the other scenes will not work without being loaded after the `Start` scene.
+
+Also, when returning to the `Start` scene we need to make sure that the `GameObject` is not duplicated. We can do this by checking if the `GameObject` already exists and destroying any duplicates. To do this we can use a static variable pointing to the already created instance.
