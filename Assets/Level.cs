@@ -21,6 +21,10 @@ public class Level : MonoBehaviour
         {
             StartCoroutine(ShowInstructions());
         }
+        else
+        {
+            Timer.Reset();
+        }
         List<Vector2> positions = new List<Vector2>();
         for (int i = 0; i < totalSheep; i++)
         {
