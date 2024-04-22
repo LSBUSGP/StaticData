@@ -19,7 +19,7 @@ public class Level : MonoBehaviour
     {
         if (intro != null)
         {
-            StartCoroutine(ShowInstructions());
+            StartCoroutine(ShowIntro());
         }
         List<Vector2> positions = new List<Vector2>();
         for (int i = 0; i < totalSheep; i++)
@@ -47,7 +47,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    IEnumerator ShowInstructions()
+    IEnumerator ShowIntro()
     {
         intro.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
