@@ -31,3 +31,16 @@ Also, when returning to the `Start` scene we need to make sure that the `GameObj
 ## ScriptableObject
 
 The final way I'm going to demonstrate is the recommended approach. That is to use a `ScriptableObject`. This is a Unity specific way to store data between scenes in a way that is still editable within the Unity Editor. To do this we need to create a new `ScriptableObject` asset and store our data in it. We can then access this data from any script in our game. Again we have to remember to reset the timer when starting a new game.
+
+## Pros and Cons
+
+| Method | Pros | Cons |
+| --- | --- | --- |
+| PlayerPrefs | simple to implement<br>less code for small data | doesn't scale well<br>persists outside of the game<br>hard to debug<br>risk of key collision |
+| Static data | simple to implement<br>can scale up<br>doesn't persist outside of the game | hard to debug<br>only editable within code |
+| DontDestroyOnLoad | editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game | harder to implement<br>difficult to debug<br>requires a boot scene |
+| ScriptableObject | simple to implement<br>editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game<br>does persist within the Editor | requires more configuration |
+
+## Other methods
+
+It is also possible to additively load scenes and keep certain data between scene loads. This is a more complex approach and is not covered here. It can be useful if large amounts of data need to be loaded asynchronously during the boot process.
