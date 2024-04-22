@@ -27,3 +27,7 @@ Another simple way is to make use of the `static` keyword for the `time` data in
 With this method we use a `GameObject` in the scene to store our time data. Unlike other `GameObject`s it won't be destroyed when the scene changes. This means we can continue to access its data between scenes. In this case we need to make sure that the `GameObject` is in the `Start` scene but not in the other scenes. This also means that the other scenes will not work without being loaded after the `Start` scene.
 
 Also, when returning to the `Start` scene we need to make sure that the `GameObject` is not duplicated. We can do this by checking if the `GameObject` already exists and destroying any duplicates. To do this we can use a static variable pointing to the already created instance. This is also an example of the Singleton pattern in the GoF book.
+
+## ScriptableObject
+
+The final way I'm going to demonstrate is the recommended approach. That is to use a `ScriptableObject`. This is a Unity specific way to store data between scenes in a way that is still editable within the Unity Editor. To do this we need to create a new `ScriptableObject` asset and store our data in it. We can then access this data from any script in our game. Again we have to remember to reset the timer when starting a new game.
