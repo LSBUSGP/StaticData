@@ -20,5 +20,5 @@ We need to set the time after winning the level. This can be added to the `YouWi
 
 ## Static data
 
-Another simple way is to make use of the `static` keyword for certain items of data in our `Timer` class. Static data belongs to the class but not to any particular instance of the data. This means that we can access it from anywhere without needing an instance of the class to reference.
+Another simple way is to make use of the `static` keyword for the `time` data in our `Timer` class. Static data belongs to the class but not to any particular instance of the data. This means that we can access it from anywhere without needing an instance of the class to reference. We still need to reset the value at the start of the game as with the `PlayerPrefs` method.
 
