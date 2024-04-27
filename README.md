@@ -18,6 +18,49 @@ Where do these calls need to go?
 
 We need to set the time after winning the level. This can be added to the `YouWin` function in `Level.cs`. Then we can load the time after the `ShowIntro` function in `Level.cs`. Finally, we can delete the time key at the beginning of the game in the `Start` function. Following the principle of "tell don't ask" we can get the `Timer` class to perform these functions for us.
 
+Add these three functions to `Timer.cs`:
+```cs
+    public void StoreTimer()
+    {
+        PlayerPrefs.SetFloat("Time", time);
+    }
+
+    public void LoadTimer()
+    {
+        time = PlayerPrefs.GetFloat("Time", 0.0f);
+    }
+
+    public static void ResetTime()
+    {
+        PlayerPrefs.DeleteKey("Time");
+    }
+```
+
+Now we can add the call to `StoreTimer` in `YouWin`:
+```cs
+    IEnumerator YouWin()
+    {
+        timer.enabled = false;
+        win.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        Load(next);
+    }
+```
+
+And we can add the call to `LoadTimer` and `ResetTimer` at the beginning of `Start`:
+```cs
+        if (timer != null)
+        {
+            timer.LoadTimer();
+        }
+        else
+        {
+            Timer.ResetTime();
+        }
+```
+
+This works because the `timer` variable is not set in the SplashScreen, but it is set in each level. In your own games you will need to find the right place to insert the store, load, and reset functions.
+
 ## Static data
 
 Another simple way is to make use of the `static` keyword for the `time` data in our `Timer` class. Static data belongs to the class but not to any particular instance of the data. This means that we can access it from anywhere without needing an instance of the class to reference. We still need to reset the value at the start of the game as with the `PlayerPrefs` method.
