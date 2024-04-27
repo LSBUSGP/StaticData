@@ -132,6 +132,68 @@ using System;
 using TMPro;
 ```
 
+Now, in `Timer.cs` we need to access the `GameData` object to update the timer text. For this we need the second part of the Singleton pattern: to provide a global access point to the instance. We can do that by adding a static `instance` variable and modifying the `Start` function to set it:
+```cs
+    public static GameData instance;
+
+    void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+        instance = this;
+    }
+```
+
+With this in place, we can now access the `UpdateTimerText` function from `Timer.cs`:
+```cs
+public class Timer : MonoBehaviour
+{
+    public TMP_Text text;
+
+    void Update()
+    {
+        GameData.instance.UpdateTimerText(text, Time.deltaTime);
+    }
+}
+```
+
+Now, if you run the program, you will find that it will work, but has a couple of issues. Firstly, although the `time` value is maintained between levels, and is reset when going back to the `Start` scene, a new instance of `GameData` is getting created each time. Secondly, if you try running the `Level1` scene or `Level2` scene, you will get an exception. To solve these issues, we need to implement the first intent of the Singleton pattern. We need to ensure that there is only one instance.
+
+One way to do this is to catch the duplication when the scene is loaded and the new object is created. We can do this from the `GameData.cs` script `Start` function:
+```cs
+    void Start()
+    {
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+```
+
+Now you can add copies of the `GameData` object to `Level1` and `Level2` scenes, but when you run, the objects won't get duplicated.
+
+Unfortunately, this re-introduces the issue that we had with the earlier methods, in that the timer doesn not reset when going back to the `Start` scene. But we can fix this in a similar way too. In `GameData.cs` we can add the function:
+```cs
+    public void ResetTimer()
+    {
+        time = 0.0f;
+    }
+```
+
+Then call it from `Level.cs` `Start` function:
+```cs
+        if (timer == null)
+        {
+            GameData.instance.ResetTimer();
+        }
+```
+
+Note, there is a potential issue here with using an `instance` variable in a `Start` function when the `instance` is also set in a `Start` function. The program will only work if the `GameData` script is processed before the `Level` script. There are two easy ways to fix this. You can change the order of execution for the `GameData` script and make it execute earlier than the `Level` script (or make the `Level` script execute after the `GameData` script.) Or, you can change the `GameData` `Start` function into `Awake`.
+
 ## ScriptableObject
 
 The final way I'm going to demonstrate is the recommended approach. That is to use a `ScriptableObject`. This is a Unity specific way to store data between scenes in a way that is still editable within the Unity Editor. To do this we need to create a new `ScriptableObject` asset and store our data in it. We can then access this data from any script in our game. Again we have to remember to reset the timer when starting a new game.
