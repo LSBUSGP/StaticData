@@ -36,7 +36,7 @@ Add these three functions to `Timer.cs`:
     }
 ```
 
-Now we can add the call to `StoreTimer` in `YouWin`:
+Now we can add the call to `StoreTimer` in the function `YouWin` in `Level.cs`:
 ```cs
     IEnumerator YouWin()
     {
@@ -59,11 +59,34 @@ And we can add the call to `LoadTimer` and `ResetTimer` at the beginning of `Sta
         }
 ```
 
-This works because the `timer` variable is not set in the SplashScreen, but it is set in each level. In your own games you will need to find the right place to insert the store, load, and reset functions.
+Note the capital `T` in the else case. This is how to reference a static function belonging to a class. We can't use the `timer` variable if it hasn't been set. It is not set in the SplashScreen scene, but it is set in each level.
+
+In your own games you will need to find the right place to insert the store, load, and reset functions.
 
 ## Static data
 
 Another simple way is to make use of the `static` keyword for the `time` data in our `Timer` class. Static data belongs to the class but not to any particular instance of the data. This means that we can access it from anywhere without needing an instance of the class to reference. We still need to reset the value at the start of the game as with the `PlayerPrefs` method.
+
+In the `Timer.cs` script, change the keywords specifying the `time` value to:
+```cs
+    public static float time = 0.0f;
+```
+
+And add this function:
+```cs
+    public static void Reset()
+    {
+        time = 0.0f;
+    }
+```
+
+And at the beginning of `Start` in `Level.cs`, add:
+```cs
+        if (timer == null)
+        {
+            Timer.Reset();
+        }
+```
 
 ## DontDestroyOnLoad
 
