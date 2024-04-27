@@ -198,6 +198,21 @@ Note, there is a potential issue here with using an `instance` variable in a `St
 
 The final way I'm going to demonstrate is the recommended approach. That is to use a `ScriptableObject`. This is a Unity specific way to store data between scenes in a way that is still editable within the Unity Editor. To do this we need to create a new `ScriptableObject` asset and store our data in it. We can then access this data from any script in our game. Again we have to remember to reset the timer when starting a new game.
 
+When creating a scriptable object, you need to create the script first. So create a new script `GameData.cs`:
+```cs
+using UnityEngine;
+
+[CreateAssetMenu]
+public class GameData : ScriptableObject
+{
+}
+```
+
+Now, you can create an instance of the `GameData` scriptable object in your project folder by selecting `Game Data`:
+![image](https://github.com/LSBUSGP/StaticData/assets/3679392/db61d1d8-2ded-494b-af67-89344c248088)
+
+
+
 ## Pros and Cons
 
 | Method | Pros | Cons |
