@@ -92,7 +92,45 @@ And at the beginning of `Start` in `Level.cs`, add:
 
 With this method we use a `GameObject` in the scene to store our time data. Unlike other `GameObject`s it won't be destroyed when the scene changes. This means we can continue to access its data between scenes. In this case we need to make sure that the `GameObject` is in the `Start` scene but not in the other scenes. This also means that the other scenes will not work without being loaded after the `Start` scene.
 
-Also, when returning to the `Start` scene we need to make sure that the `GameObject` is not duplicated. We can do this by checking if the `GameObject` already exists and destroying any duplicates. To do this we can use a static variable pointing to the already created instance. This is also an example of the Singleton pattern in the GoF book.
+Also, when returning to the `Start` scene we need to make sure that the `GameObject` is not duplicated. We can do this by checking if the `GameObject` already exists and destroying any duplicates. To do this we can use a static variable pointing to the already created instance. This is also an example of the Singleton pattern in the GoF Design Patterns book.
+
+![image](https://github.com/LSBUSGP/StaticData/assets/3679392/8282f72c-e9ba-4846-a8a1-7dc633212134)
+
+The intent of the Singleton pattern is:
+> Singleton is a creational design pattern that lets you ensure that a class has only one instance, while providing a global access point to this instance.
+
+Let's start by creating a new game object in the `Start` scene. Call this object `GameData` and then create a new script also called `GameData` and add it to the object. To begin with, let's just mark the object with `DontDestroyOnLoad` when it is created:
+```cs
+using UnityEngine;
+
+public class GameData : MonoBehaviour
+{
+    void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+}
+```
+
+Now when you run the game and start playing level 1, you should see the `GameData` object (the same one from the `Start` scene) is still in the Hierarchy Window:
+
+![image](https://github.com/LSBUSGP/StaticData/assets/3679392/50d3572b-f819-4f44-bfb3-39ae39865309)
+
+So, with this we can move the `time` variable from the `Timer` class into the `GameData` class. Now, we could make the variable public and access from the `Timer` class, but that would be breaking our "tell don't ask" rule. So instead, we can move the `Update` functionality from the `Timer` class and put that into the GameData class too. To do this, we need to create a new function in `GameData.cs` and because we don't have access to the `Timer`s `text` object from the `GameData` class we'll have to pass that in as a parameter (and we might as well pass in `deltaTime` while we are at it:
+```cs
+    public void UpdateTimerText(TMP_Text text, float deltaTime)
+    {
+        time += deltaTime;
+        TimeSpan span = TimeSpan.FromSeconds(time);
+        text.text = $"TIME: {span.Minutes:D2}:{span.Seconds:D2}.{span.Milliseconds/10:D2}";
+    }
+```
+
+Note, you will also need to add some `using` statements to the top of the file, `System` for `TimeSpan` and `TMPro` for `TMP_Text`:
+```cs
+using System;
+using TMPro;
+```
 
 ## ScriptableObject
 
