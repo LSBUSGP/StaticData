@@ -41,6 +41,7 @@ Now we can add the call to `StoreTimer` in the function `YouWin` in `Level.cs`:
     IEnumerator YouWin()
     {
         timer.enabled = false;
+	timer.SaveTime();
         win.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         Load(next);
