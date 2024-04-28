@@ -4,7 +4,13 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GameData : ScriptableObject
 {
+    public static GameData instance;
     [SerializeField] float time;
+
+    void OnEnable()
+    {
+        instance = this;
+    }
 
     public void ResetTimer()
     {
