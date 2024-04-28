@@ -5,16 +5,19 @@ using UnityEngine;
 public class GameData : MonoBehaviour
 {
     public static GameData instance;
-    float time = 0.0f;
+    [SerializeField] float time = 0.0f;
 
     void Start()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Destroy(instance.gameObject);
+            DontDestroyOnLoad(gameObject);
+            instance = this;
         }
-        DontDestroyOnLoad(gameObject);
-        instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void UpdateTimeText(TMP_Text text)
@@ -22,5 +25,10 @@ public class GameData : MonoBehaviour
         time += Time.deltaTime;
         TimeSpan span = TimeSpan.FromSeconds(time);
         text.text = $"TIME: {span.Minutes:D2}:{span.Seconds:D2}.{span.Milliseconds/10:D2}";
+    }
+
+    public void ResetTimer()
+    {
+        time = 0.0f;
     }
 }

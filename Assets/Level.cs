@@ -17,6 +17,10 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+        if (timer == null)
+        {
+            GameData.instance.ResetTimer();
+        }
         if (intro != null)
         {
             StartCoroutine(ShowIntro());
