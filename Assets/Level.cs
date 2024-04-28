@@ -17,6 +17,10 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+        if (timer == null)
+        {
+            Timer.Reset();
+        }
         if (intro != null)
         {
             StartCoroutine(ShowIntro());
