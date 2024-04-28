@@ -70,7 +70,7 @@ Another simple way is to make use of the `static` keyword for the `time` data in
 
 In the `Timer.cs` script, change the keywords specifying the `time` value to:
 ```cs
-    public static float time = 0.0f;
+    static float time = 0.0f;
 ```
 
 And add this function:
