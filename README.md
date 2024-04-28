@@ -209,9 +209,71 @@ public class GameData : ScriptableObject
 ```
 
 Now, you can create an instance of the `GameData` scriptable object in your project folder by selecting `Game Data`:
+
 ![image](https://github.com/LSBUSGP/StaticData/assets/3679392/db61d1d8-2ded-494b-af67-89344c248088)
 
+Now we can move the `time` variable and functions into `GameData.cs` as we did with the previous method:
+```cs
+using System;
+using TMPro;
+using UnityEngine;
 
+[CreateAssetMenu]
+public class GameData : ScriptableObject
+{
+	[SerializeField] float time = 0.0f;
+
+	public void UpdateTimerText(TMP_Text text, float deltaTime)
+	{
+		time += deltaTime;
+		TimeSpan span = TimeSpan.FromSeconds(time);
+		text.text = $"TIME: {span.Minutes:D2}:{span.Seconds:D2}.{span.Milliseconds / 10:D2}";
+	}
+
+	public void ResetTimer()
+	{
+		time = 0.0f;
+	}
+}
+```
+
+I have added the keyword `[SerializeField]` to the time variable as I want it to be private, but still allow it to be modified within the Unity Editor.
+
+As with the previous method, we can provide a global access point to this instance. But in this case, no matter how many times we change scenes, we still only have one instance to deal with. So here we don't need to deal with duplicates. Because this is a `ScriptableObject` rather than a `MonoBehaviour` we can put our instance code in the `OnEnable` function which always gets called whenever the object is loaded. Since it gets loaded once when the game loads, and is not normally unloaded, this is a good place to initialise our global static instance variable.
+
+```cs
+    public static GameData instance;
+	void OnEnable()
+	{
+		instance = this;
+	}
+```
+
+Now we can call the functions from `Timer.cs`:
+```cs
+using TMPro;
+using UnityEngine;
+
+public class Timer : MonoBehaviour
+{
+    public TMP_Text text;
+
+    void Update()
+    {
+        GameData.instance.UpdateTimerText(text, Time.deltaTime);
+    }
+}
+```
+
+And from the `Level.cs` `Start` function as before:
+```cs
+        if (timer == null)
+        {
+            GameData.instance.ResetTimer();
+        }
+```
+
+Unlike the `DontDestroyOnLoad` example, we don't need to add anything to the scenes but we can still run any scene independently.
 
 ## Pros and Cons
 
@@ -219,8 +281,8 @@ Now, you can create an instance of the `GameData` scriptable object in your proj
 | --- | --- | --- |
 | PlayerPrefs | simple to implement<br>less code for small data | doesn't scale well<br>persists outside of the game<br>hard to debug<br>risk of key collision |
 | Static data | simple to implement<br>can scale up<br>doesn't persist outside of the game | hard to debug<br>only editable within code |
-| DontDestroyOnLoad | editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game | harder to implement<br>difficult to debug<br>requires a boot scene |
-| ScriptableObject | simple to implement<br>editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game<br>does persist within the Editor | requires more configuration |
+| DontDestroyOnLoad | editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game | harder to implement<br>difficult to debug<br>requires a boot scene or duplicate data objects |
+| ScriptableObject | simple to implement<br>editable within the Unity Editor<br>scales well<br>doesn't persist outside of the game<br>does persist within the Editor | creates more coupling |
 
 ## Other methods
 
