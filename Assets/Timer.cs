@@ -16,13 +16,18 @@ public class Timer : MonoBehaviour
         text.text = $"TIME: {span.Minutes:D2}:{span.Seconds:D2}.{span.Milliseconds/10:D2}";
     }
 
-    internal void SaveTime()
+    public void SaveTime()
     {
         PlayerPrefs.SetFloat("Time", time);
     }
 
-    internal void LoadTime()
+    public void LoadTime()
     {
         time = PlayerPrefs.GetFloat("Time", 0.0f);
+    }
+
+    public static void Reset()
+    {
+        PlayerPrefs.DeleteKey("Time");
     }
 }

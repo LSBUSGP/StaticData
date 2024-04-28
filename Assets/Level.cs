@@ -17,13 +17,17 @@ public class Level : MonoBehaviour
 
     void Start()
     {
-        if (intro != null)
+        if (timer != null)
         {
-            StartCoroutine(ShowIntro());
+            timer.LoadTime();
         }
         else
         {
-            PlayerPrefs.DeleteKey("Time");
+            Timer.Reset();
+        }
+        if (intro != null)
+        {
+            StartCoroutine(ShowIntro());
         }
         List<Vector2> positions = new List<Vector2>();
         for (int i = 0; i < totalSheep; i++)
@@ -56,7 +60,6 @@ public class Level : MonoBehaviour
         intro.gameObject.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         intro.gameObject.SetActive(false);
-        timer.LoadTime();
         timer.gameObject.SetActive(true);
 
     }
